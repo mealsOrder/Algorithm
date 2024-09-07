@@ -12,11 +12,9 @@ int main(){
     cin.tie(0); cout.tie(0);
     int N;
     cin >> N;
-    vector<int>v;
+    vector<int>v(N);
     for(int i=0;i<N;i++){
-        int a;
-        cin >> a;
-        v.push_back(a);
+        cin >> v[i];
     }
     sort(v.begin(),v.end(),cmp);
 
