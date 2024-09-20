@@ -1,32 +1,30 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <iostream>
+#include <climits>
+// BOJ - 13305 Gas Station
 using namespace std;
-const int MX = 100001;
-long long arr[MX];
-long long dist[MX];
-long long ans;
-int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
 
-    int N;
-    cin >> N;
+int cost[100001], dist[100001];
 
-    for(int i=0;i<N-1;i++){
-        cin >> dist[i];
-    }
+long long solve(int n) {
+	int MINcost = INT_MAX;
+	long long dist_sum = 0;
+	
+	for (int i = 1; i < n; i++) {
+		if (cost[i] < MINcost) MINcost = cost[i];
+		dist_sum += (long long)MINcost * (long long)dist[i];
+	}
 
-    for(int i=0;i<N;i++){
-        cin >> arr[i];
-    }
+	return dist_sum;
+}
 
-    ans = arr[0] * dist[0];
+int main(void) {
+	int n;
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
 
-    for(int i=1;i<N;i++){
-        ans = ans+min(arr[i]*dist[i],arr[i-1]*dist[i]);
-    }
+	cin >> n;
+	for (int i = 1; i < n; i++) cin >> dist[i];
+	for (int i = 1; i <= n; i++) cin >> cost[i];
+	cout << solve(n);
 
-    cout << ans;
-    return 0;
+	return 0;
 }
