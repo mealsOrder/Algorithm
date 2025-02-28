@@ -4,51 +4,34 @@
 #include<queue>
 using namespace std;
 
-vector<int>A;
-vector<int>B;
-vector<int>ans;
+vector<int> A, B;
 
 int main(){
-    ios_base::sync_with_stdio(0);
+    ios::sync_with_stdio(0);
     cin.tie(0);
-    cout.tie(0);
 
-    int a,b;
-    cin >> a >> b;
+    int n, m;
+    cin >> n >> m;
 
-    for(int i=0;i<a;i++){
-        int n;
-        cin >> n;
-        A.push_back(n);
+    int num;
+    for (int i = 0; i < n; ++i){
+        cin >> num;
+        A.push_back(num);
     }
-    for(int i=0;i<b;i++){
-        int n;
-        cin >> n;
-        B.push_back(n);
-    }
-    sort(A.begin(),A.end());
-    sort(B.begin(),B.end());
-
-    int i=0, j=0;
-
-    while(i<a && j<b){
-        if(A[i] == B[j]){
-            i++,j++;
-        }
-        else if(A[i] < B[j]){
-            ans.push_back(A[i]);
-            i++;
-        }
-        else{
-            j++;
-        }
-    }
-    while(i<a){
-        ans.push_back(A[i]);
-        i++;
+    
+    for (int i = 0; i < m; ++i){
+        cin >> num;
+        B.push_back(num);
     }
 
-    cout << ans.size() << '\n';
-    for(int x:ans) cout << x << ' ';
-    return 0;
+    sort(A.begin(), A.end());
+    sort(B.begin(), B.end());
+
+    vector<int> ans;
+    for (int num : A){
+        if (binary_search(B.begin(), B.end(), num)) continue;
+        ans.push_back(num);
+    }
+    cout << ans.size() << "\n";
+    for (int num : ans) cout << num << " ";
 }
