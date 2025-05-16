@@ -3,68 +3,57 @@
 #include<algorithm>
 #include<tuple>
 using namespace std;
-const int MX = 10001;
-int N,M;
-vector<tuple<int,int,int>>t ;
-int parent[MX];
-int ans;
 
-bool cmp(tuple<int,int,int> &a, tuple<int,int,int>&b){
-    return get<0>(a) < get<0>(b);
-}
+int N,M;
+vector<tuple<int,int,int>>t;
+vector<int>p;
 
 int Find(int x){
-    if(parent[x] == x) return x;
-    return parent[x] = Find(parent[x]);
+    if(x == p[x])return x;
+    return p[x] = Find(p[x]);
 }
 
-void Union(int u,int v){
-    u = Find(u);
-    v = Find(v);
+void Union(int x,int y){
+    x = Find(x);
+    y = Find(y);
 
-    if(u>v) parent[u] = v;
-    else parent[v] = u;
-}
-bool isSameParent(int u,int v){
-    u = Find(u);
-    v = Find(v);
-
-    if(u==v) return true;
-    else return false;
+    if(y>x)p[y]=x;
+    else p[x]=y;
 }
 
-void kruskal(){
-    for(int i=0;i<t.size();i++){
-        int cost = get<0>(t[i]);
-        int u = get<1>(t[i]);
-        int v = get<2>(t[i]);
-        if(!isSameParent(u,v)){
-            Union(u,v);
-            ans += cost;
+int kruskal(){
+    sort(t.begin(),t.end());
+    int ans = 0;
+    int connected = 0;
+
+    for(auto edge:t){
+        int cost,from,to;
+        tie(cost,from,to)=edge;
+
+        if(Find(from)!=Find(to)){
+            Union(from,to);
+            ans+=cost;
+            connected++;
         }
+        if(connected == N-1) return ans;
     }
-    cout << ans << '\n';
+    return -1;
 }
 
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
     cin >> N >> M;
-
-    for(int i=1;i<=N;i++){
-        parent[i] = i;
-    }
-
-    for(int i=0;i<M;i++){
+    p.resize(N+1);
+    for(int i=1;i<=N;i++)p[i]=i;
+    while(M--){
         int a,b,c;
         cin >> a >> b >> c;
-
         t.push_back({c,a,b});
     }
 
-    sort(t.begin(),t.end(),cmp);
-    
-    kruskal();
-
+    int res = kruskal();
+    cout << res << '\n';
     return 0;
 }
